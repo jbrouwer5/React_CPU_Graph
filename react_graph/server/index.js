@@ -1,18 +1,20 @@
 const path = require("path");
 const express = require("express");
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
-app.use(express.static(path.resolve(__dirname, "../build")));
+// const __dirname = "."
+
+app.use(express.static(path.resolve(".", "../build")));
 
 app.get("/api", (req, res) => {
   res.json({ message: "Hello World!" });
 });
 
 app.get("*", (req, res) => {
-  res.sendFile(path.resolve(_dirname, "../build", "index.html"));
+  res.sendFile(path.resolve(".", "../build", "index.html"));
 });
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
