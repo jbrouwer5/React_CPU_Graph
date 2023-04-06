@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import ApexCharts from "apexcharts";
 import ReactApexChart from "react-apexcharts";
 
-class App extends React.Component {
+function ProcessData() {
+  const [data, setData] = React.useState([]);
+
+  React.useEffect(() => {
+    fetch("/cpu")
+      .then((res) => res.json())
+      .then((data) => setData(data));
+  }, []);
+
+  return data;
+}
+
+class Chart extends React.Component {
   constructor(props) {
     super(props);
 
@@ -13,26 +25,6 @@ class App extends React.Component {
           data: [
             [Date.now() - 150000, 30.95],
             [Date.now() - 155000, 35.95],
-            [Date.now() - 160000, 30.95],
-            [Date.now() - 165000, 30.95],
-            [Date.now() - 170000, 39.95],
-            [Date.now() - 175000, 30.95],
-            [Date.now() - 180000, 30.95],
-            [Date.now() - 185000, 20.95],
-            [Date.now() - 190000, 20.95],
-            [Date.now() - 195000, 20.95],
-            [Date.now() - 200000, 23.95],
-            [Date.now() - 205000, 30.95],
-            [Date.now() - 215000, 35.95],
-            [Date.now() - 220000, 30.95],
-            [Date.now() - 225000, 30.95],
-            [Date.now() - 230000, 39.95],
-            [Date.now() - 235000, 30.95],
-            [Date.now() - 240000, 30.95],
-            [Date.now() - 245000, 20.95],
-            [Date.now() - 255000, 20.95],
-            [Date.now() - 260000, 20.95],
-            [Date.now() - 265000, 23.95],
           ],
         },
       ],
@@ -85,7 +77,7 @@ class App extends React.Component {
         },
         xaxis: {
           type: "datetime",
-          min: Date.now() - 3600000,
+          min: Date.now() - 60000,
           tickAmount: 6,
           labels: {
             format: "h:mm TT",
@@ -248,6 +240,19 @@ class App extends React.Component {
       </div>
     );
   }
+}
+
+function App() {
+  const data = ProcessData();
+  var chart = new Chart();
+
+  chart.state.series = [
+    {
+      data: data,
+    },
+  ];
+
+  return chart.render();
 }
 
 export default App;
