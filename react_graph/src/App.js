@@ -174,6 +174,14 @@ class Chart extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.interval = setInterval(() => 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
   render() {
     return (
       <div id="chart">
@@ -243,8 +251,28 @@ class Chart extends React.Component {
 }
 
 function App() {
-  const data = ProcessData();
+  const [data, setData] = React.useState([]);
+  const [selection, setSelection] = React.useState("");
+  console.log(selection);
   var chart = new Chart();
+
+  React.useEffect(() => {
+    fetch("/cpu")
+      .then((res) => res.json())
+      .then((data) => setData(data));
+
+    setSelection(chart.state.selection);
+
+    const interval = setInterval(async () => {
+      fetch("/cpu")
+        .then((res) => res.json())
+        .then((data) => setData(data));
+
+      setSelection(chart.state.selection);
+
+      await fetch("/add");
+    }, 5000);
+  }, []);
 
   chart.state.series = [
     {
@@ -252,6 +280,8 @@ function App() {
     },
   ];
 
+  //   chart.state.selection = selection;
+  //   console.log(selection);
   return chart.render();
 }
 

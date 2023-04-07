@@ -8,28 +8,25 @@ const app = express();
 // const __dirname = "."
 
 const cpu_data = [
-  [Date.now() - 150000, 30.95],
-  [Date.now() - 155000, 35.95],
-  [Date.now() - 160000, 30.95],
-  [Date.now() - 165000, 30.95],
-  [Date.now() - 170000, 39.95],
-  [Date.now() - 175000, 30.95],
-  [Date.now() - 180000, 30.95],
-  [Date.now() - 185000, 20.95],
-  [Date.now() - 190000, 20.95],
-  [Date.now() - 195000, 20.95],
-  [Date.now() - 200000, 23.95],
-  [Date.now() - 205000, 30.95],
-  [Date.now() - 215000, 35.95],
-  [Date.now() - 220000, 30.95],
-  [Date.now() - 225000, 30.95],
-  [Date.now() - 230000, 39.95],
-  [Date.now() - 235000, 30.95],
-  [Date.now() - 240000, 30.95],
-  [Date.now() - 245000, 20.95],
-  [Date.now() - 255000, 20.95],
-  [Date.now() - 260000, 20.95],
-  [Date.now() - 265000, 23.95],
+  [Date.now() - 90000, 100 - Math.random() * 99],
+  [Date.now() - 85000, 100 - Math.random() * 99],
+  [Date.now() - 80000, 100 - Math.random() * 99],
+  [Date.now() - 75000, 100 - Math.random() * 99],
+  [Date.now() - 70000, 100 - Math.random() * 99],
+  [Date.now() - 65000, 100 - Math.random() * 99],
+  [Date.now() - 60000, 100 - Math.random() * 99],
+  [Date.now() - 55000, 100 - Math.random() * 99],
+  [Date.now() - 50000, 100 - Math.random() * 99],
+  [Date.now() - 45000, 100 - Math.random() * 99],
+  [Date.now() - 40000, 100 - Math.random() * 99],
+  [Date.now() - 35000, 100 - Math.random() * 99],
+  [Date.now() - 30000, 100 - Math.random() * 99],
+  [Date.now() - 25000, 100 - Math.random() * 99],
+  [Date.now() - 20000, 100 - Math.random() * 99],
+  [Date.now() - 15000, 100 - Math.random() * 99],
+  [Date.now() - 10000, 100 - Math.random() * 99],
+  [Date.now() - 5000, 100 - Math.random() * 99],
+  [Date.now(), 100 - Math.random() * 99],
 ];
 
 app.use(express.static(path.resolve(".", "../build")));
@@ -38,8 +35,13 @@ app.get("/cpu", (req, res) => {
   res.send(cpu_data);
 });
 
+app.get("/add", (req, res) => {
+  cpu_data.push([Date.now(), 100 - Math.random() * 99]);
+});
+
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(".", "../build", "index.html"));
 });
+
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
