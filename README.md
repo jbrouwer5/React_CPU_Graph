@@ -1,8 +1,8 @@
 # Parallel-Works-Graph
 
-##
 
-##Setup:
+
+#Setup:
 
 First, make sure you have npm, React, and node.js installed. 
 
