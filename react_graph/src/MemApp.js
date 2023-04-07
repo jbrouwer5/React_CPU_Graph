@@ -3,7 +3,6 @@ import "./App.css";
 import ApexCharts from "apexcharts";
 import ReactApexChart from "react-apexcharts";
 
-
 // A Chart object which provides the framework for the graph
 class Chart extends React.Component {
   constructor(props) {
@@ -32,7 +31,7 @@ class Chart extends React.Component {
               borderColor: "#999",
               label: {
                 show: true,
-                text: "CPU Utilization",
+                text: "Mem Utilization",
                 style: {
                   color: "#fff",
                   background: "#61dafb",
@@ -219,39 +218,47 @@ class Chart extends React.Component {
   }
 }
 
-function App() {
-  const [data, setData] = React.useState([]);
-  const [selection, setSelection] = React.useState("");
-  console.log(selection);
-  var chart = new Chart();
+function MemApp() {
+  const [memData, setMemData] = React.useState([]);
+  const [memSelection, setMemSelection] = React.useState("");
+  console.log(memSelection);
+  var memChart = new Chart();
+  memChart.state.options.annotations.yaxis.label = {
+    show: true,
+    text: "Mem Utilization",
+    style: {
+      color: "#fff",
+      background: "#61dafb",
+    },
+  };
 
   React.useEffect(() => {
-    fetch("/cpu")
+    fetch("/mem")
       .then((res) => res.json())
-      .then((data) => setData(data));
+      .then((memData) => setMemData(memData));
 
-    setSelection(chart.state.selection);
+    setMemSelection(memChart.state.memSelection);
 
     // refreshes every 5 seconds and pulls new
     // data from the backend
     const interval = setInterval(async () => {
-      fetch("/cpu")
+      fetch("/mem")
         .then((res) => res.json())
-        .then((data) => setData(data));
+        .then((memData) => setMemData(memData));
 
-      setSelection(chart.state.selection);
+      setMemSelection(memChart.state.selection);
 
-      await fetch("/add");
+      await fetch("/memAdd");
     }, 5000);
   }, []);
 
-  chart.state.series = [
+  memChart.state.series = [
     {
-      data: data,
+      data: memData,
     },
   ];
 
-  return chart.render();
+  return memChart.render();
 }
 
-export default App;
+export default MemApp;
